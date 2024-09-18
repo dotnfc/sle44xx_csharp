@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// MIT License
+// 
+// Copyright (c) 2024 dotnfc
+// 
 
 namespace SLE44xxTool.MemoryCard
 {

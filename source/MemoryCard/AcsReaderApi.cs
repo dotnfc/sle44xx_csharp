@@ -1,12 +1,10 @@
-﻿using System;
+﻿// MIT License
+// 
+// Copyright (c) 2024 dotnfc
+// 
+
+using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.IO.Ports;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Windows.Forms.VisualStyles;
-using static SLE44xxTool.MemoryCard.Sle44xx;
 
 namespace SLE44xxTool.MemoryCard
 {

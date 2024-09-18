@@ -1,7 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// MIT License
+// 
+// Copyright (c) 2024 dotnfc
+// 
+
+using System;
 
 namespace SLE44xxTool.MemoryCard
 {
@@ -46,7 +48,7 @@ namespace SLE44xxTool.MemoryCard
     {
         public static ICardReaderApi CreateCardReader(string readerName, object device)
         {
-            if (readerName.StartsWith("HID"))
+            if (readerName.StartsWith("HID") || readerName.StartsWith("Feitian") )
             {
                 return new HidReaderApi((WinscardReader)device);
             }

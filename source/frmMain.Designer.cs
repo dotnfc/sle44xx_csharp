@@ -53,6 +53,8 @@
             this.btnRefresh = new System.Windows.Forms.Button();
             this.cbxReaderList = new System.Windows.Forms.ComboBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.sle44xxPanel1 = new SLE44xxTool.ExtControl.Sle44xxPanel();
+            this.tabPageSLE4442.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.tblPanel.SuspendLayout();
@@ -78,6 +80,7 @@
             // 
             // tabPageSLE4442
             // 
+            this.tabPageSLE4442.Controls.Add(this.sle44xxPanel1);
             this.tabPageSLE4442.Location = new System.Drawing.Point(4, 25);
             this.tabPageSLE4442.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.tabPageSLE4442.Name = "tabPageSLE4442";
@@ -376,6 +379,15 @@
             this.toolStrip1.TabIndex = 13;
             this.toolStrip1.Text = "toolStrip1";
             // 
+            // sle44xxPanel1
+            // 
+            this.sle44xxPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sle44xxPanel1.Location = new System.Drawing.Point(3, 5);
+            this.sle44xxPanel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.sle44xxPanel1.Name = "sle44xxPanel1";
+            this.sle44xxPanel1.Size = new System.Drawing.Size(1338, 455);
+            this.sle44xxPanel1.TabIndex = 0;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -392,6 +404,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmMain";
             this.Text = "SLE44xxTool - 1.0";
+            this.tabPageSLE4442.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
@@ -439,6 +452,7 @@
         private System.Windows.Forms.ToolStrip toolStrip1;
         private ExtControl.ByteViewerControl byteDataView;
         private ExtControl.ByteViewerControl byteAttrView;
+        private ExtControl.Sle44xxPanel sle44xxPanel1;
     }
 }
 

@@ -19,6 +19,7 @@ namespace SLE44xxTool
     {
         private WinscardReader mReader;
         private ICardReaderApi mCardApi;
+        private CardType mCardType;
 
         public frmMain()
         {
@@ -140,11 +141,13 @@ namespace SLE44xxTool
         {
             if (tabCardType.SelectedIndex == 0)
             {
-                mCardApi.SetCardType(CardType.SLE4428);
+                mCardType = CardType.SLE4428;
+                // mCardApi.SetCardType(CardType.SLE4428);
             }
             else if (tabCardType.SelectedIndex == 1)
             {
-                mCardApi.SetCardType(CardType.SLE4442);
+                mCardType = CardType.SLE4442;
+                // mCardApi.SetCardType(CardType.SLE4442);
             }
         }
 
