@@ -56,18 +56,6 @@
     <Compile Include="ExtControl\FormEx.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ExtControl\Sle44xxPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ExtControl\Sle44xxPanel.Designer.cs">
-      <DependentUpon>Sle44xxPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmEdit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -94,11 +82,8 @@
     <EmbeddedResource Include="ExtControl\ByteViewerControl.resx">
       <DependentUpon>ByteViewerControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ExtControl\Sle44xxPanel.resx">
-      <DependentUpon>Sle44xxPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="ExtControl\FormEx.resx">
+      <DependentUpon>FormEx.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmEdit.resx">
       <DependentUpon>frmEdit.cs</DependentUpon>

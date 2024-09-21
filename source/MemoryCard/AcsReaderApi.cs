@@ -113,7 +113,7 @@ namespace SLE44xxTool.MemoryCard
             return false;
         }
 
-        public bool ChangePSC(string strNewPsc)
+        public bool ChangePSC(string strOldPsc, string strNewPsc)
         {
             bool ret;
             byte[] rapdu = null;
@@ -162,29 +162,8 @@ namespace SLE44xxTool.MemoryCard
             ret = _reader.Transmit(apdu, ref rapdu);
             if (ret && _reader.SW == 0x9000)
             {
-                int count = 0;
-                BitArray bitErrorCounter = new BitArray(rapdu[0]);
-
-                if (_cardType == CardType.SLE4428)
-                {
-                    for (int i = 0; i < bitErrorCounter.Length; i++)
-                    {
-                        if (bitErrorCounter[i].ToString() == "True")
-                            count++;
-                    }
-                }
-                else if (_cardType == CardType.SLE4442)
-                {
-                    for (int i = 0; i < rapdu[0]; i++)
-                    {
-                        if (bitErrorCounter[i].ToString() == "True")
-                            count++;
-                    }
-                }
-                else
-                {
-                    count = 0;
-                }
+                int count = Utils.CountBits(rapdu[0]);
+                
                 return count;
             }
 
@@ -282,9 +261,8 @@ namespace SLE44xxTool.MemoryCard
 
             Array.Clear(_card.AttrData, 0, _card.AttrData.Length);
 
-            int length = _card.MemSize;
+            int length = _card.AttrData.Length;
             bool[] result;
-            int i = 0;
 
             while (addr < length)
             {
@@ -292,7 +270,7 @@ namespace SLE44xxTool.MemoryCard
 
                 if (ret && _reader.SW == 0x9000)
                 {
-                    for (i = 0; i < 16; i++)
+                    for (int i = 0; i < 16; i++)
                     {
                         result = Utils.ExpandByteToEightBools(rapdu[i]);
                         Array.Copy(result, 0, _card.AttrData, addr + i * 8, 8);

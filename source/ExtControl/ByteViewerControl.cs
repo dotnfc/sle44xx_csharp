@@ -5,6 +5,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -265,17 +266,21 @@ namespace SLE44xxTool.ExtControl
                         {
                             string cellText = index < cardDataLength ? data[index].ToString("X2") : "  ";
 
-                            if ((protectedData != null) && (index < cardDataLength) && (!protectedData[index]))
+                            if ((protectedData != null) && (index < cardDataLength) && (index < protectedData.Length))
                             {
-                                g.FillRectangle(protectedBrush, cellRect); // 保护单元格背景色
+                                if(!protectedData[index])
+                                    g.FillRectangle(protectedBrush, cellRect); // 保护单元格背景色
                             }
                             g.DrawString(cellText, font, textBrush, addressWidth + col * cellWidth + 2, y + 4);
                         }
                     }
                     else if (showMode == ShowMode.ATTR)
                     {
-                        string attrText = index < cardDataLength && protectedData[index] ? mIconUnLocked : mIconLocked;
-                        TextRenderer.DrawText(g, attrText, attrFont, cellRect, Color.Red, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+                        if (index < protectedData.Length)
+                        {
+                            string attrText = index < cardDataLength && protectedData[index] ? mIconUnLocked : mIconLocked;
+                            TextRenderer.DrawText(g, attrText, attrFont, cellRect, Color.Red, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+                        }
                     }
                 }
 
@@ -308,19 +313,41 @@ namespace SLE44xxTool.ExtControl
             }
         }
 
+        private int GetScrollMax (int X, int D)
+        {
+            int N = X / D; // 计算可以分成的份数
+            int result = (X % D > 0) ? D * (N + 1) : D * N;
+            return result;
+        }
+
+        private int getRoundDownHeigth(int X, int D)
+        {
+            int N = X / D; // 计算可以分成的份数
+            int result = D * N; //  (X % D > 0) ? D * (N + 1) : D * N;
+            return result;
+        }
+
+        private int getRoundUpHeigth(int X, int D)
+        {
+            int N = X / D; // 计算可以分成的份数
+            int result = (X % D > 0) ? D * (N + 1) : D * N;
+            return result;
+        }
+
         private void AdjustScrollBars()
         {
             if ((data == null) && protectedData == null) return;
 
             rowHeight = GetRowHeight();
-            int rowCount = cardDataLength / bytesPerRow + 3;
+            int rowCount = cardDataLength / bytesPerRow + 2 /* head row */;
             int totalHeight = rowCount * rowHeight;
 
             // Adjust vertical scrollbar
+            verticalScrollBar.Value = 0;
             if (totalHeight > ClientSize.Height)
             {
                 verticalScrollBar.Maximum = totalHeight;
-                verticalScrollBar.LargeChange = ClientSize.Height;
+                verticalScrollBar.LargeChange = getRoundDownHeigth(ClientSize.Height, rowHeight);
                 verticalScrollBar.SmallChange = rowHeight;
                 verticalScrollBar.Visible = true;
             }
@@ -330,6 +357,7 @@ namespace SLE44xxTool.ExtControl
             }
 
             // Adjust horizontal scrollbar
+            horizontalScrollBar.Value = 0;
             int totalWidth = addressWidth + bytesPerRow * cellWidth + 2 * cellWidth;
             if (totalWidth > ClientSize.Width)
             {
@@ -349,7 +377,10 @@ namespace SLE44xxTool.ExtControl
 
         private void VerticalScrollBar_Scroll(object sender, ScrollEventArgs e)
         {
-            Invalidate(); // 滚动时重新绘制
+            int vscrollValue = verticalScrollBar.Value;
+            verticalScrollBar.Value = getRoundUpHeigth(vscrollValue, GetRowHeight());
+            Debug.Print("new now " + e.NewValue + " : " + vscrollValue);
+            Invalidate();
         }
 
         private void HorizontalScrollBar_Scroll(object sender, ScrollEventArgs e)
@@ -359,25 +390,25 @@ namespace SLE44xxTool.ExtControl
 
         private void ByteViewerControl_MouseWheel(object sender, MouseEventArgs e)
         {
-            int vscrollValue = verticalScrollBar.Value;
-            if (e.Delta > 0)
+            // e.Delta 往下滚动 -, 往上滚动 +
+            if (e.Delta == 0)
             {
-                if (vscrollValue > verticalScrollBar.Minimum)
-                    vscrollValue -= verticalScrollBar.SmallChange;
-            }
-            else
-            {
-                if (vscrollValue < verticalScrollBar.Maximum - verticalScrollBar.LargeChange + 1)
-                    vscrollValue += verticalScrollBar.SmallChange;
+                return;
             }
 
+            int vscrollValue = verticalScrollBar.Value - e.Delta;
             if (vscrollValue < 0)
             {
                 vscrollValue = 0;
             }
+            if (vscrollValue > (verticalScrollBar.Maximum - verticalScrollBar.LargeChange))
+            {
+                vscrollValue = (verticalScrollBar.Maximum - verticalScrollBar.LargeChange);
+            }
+
             verticalScrollBar.Value = vscrollValue;
 
-            this.Invalidate(true);
+            Invalidate(); // 滚动时重新绘制
         }
 
         private void ByteViewerControl_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -472,13 +503,21 @@ namespace SLE44xxTool.ExtControl
                 selectedRow = row;
                 Invalidate();
             }
-            if (row < 0 || col < 0 || row >= (cardDataLength + bytesPerRow + 3 - 1) / (bytesPerRow + 3)) return;
+            if (row < 0 || col < 0)
+            {
+                return;
+            }
+
+            if (row >= (cardDataLength + bytesPerRow) / bytesPerRow)
+            {
+                return;
+            }
 
             if (e.X >= addressWidth && e.X < addressWidth + bytesPerRow * cellWidth)
             {
                 int rowCount = (cardDataLength + bytesPerRow - 1) / bytesPerRow;
                 rowHeight = GetRowHeight();
-                int fullRowHeigth = (rowHeight + 1) * rowCount;
+                int fullRowHeigth = rowHeight * (1 + rowCount);
 
                 if (e.Y >= rowHeight && e.Y < fullRowHeigth)
                 {

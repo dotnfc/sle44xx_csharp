@@ -9,7 +9,7 @@ namespace SLE44xxTool.MemoryCard
 {
     public enum CardType
     {
-        SLE4428, SLE4442, AT24C
+        SLE4428, SLE4442, ATI2C
     }
 
     public interface ICardReaderApi
@@ -24,7 +24,7 @@ namespace SLE44xxTool.MemoryCard
 
         bool AuthPSC(string strPsc);
         
-        bool ChangePSC(string strNewPsc);
+        bool ChangePSC(string strOldPsc, string strNewPsc);
 
         int ReadErrorCounter();
 

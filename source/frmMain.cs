@@ -19,7 +19,6 @@ namespace SLE44xxTool
     {
         private WinscardReader mReader;
         private ICardReaderApi mCardApi;
-        private CardType mCardType;
 
         public frmMain()
         {
@@ -82,7 +81,7 @@ namespace SLE44xxTool
             this.WindowState = FormWindowState.Maximized;
         }
 
-        private void btnRdrConnect_Click(object sender, EventArgs e)
+        private bool ConnectReader(bool bChangePCS = true)
         {
             if (mReader.IsConnected)
             {
@@ -105,17 +104,24 @@ namespace SLE44xxTool
                     LogMessage("ATR: " + atr);
 
                     mCardApi = CardReaderFactory.CreateCardReader(readerName, mReader);
-                    DetectCard();
-                    return;
+                    DetectCard(bChangePCS);
+                    return true;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
+
             }
 
             statusLabel.Text = "Failed to connect " + readerName;
             statusLabel.ForeColor = Color.Red;
             LogMessage("Failed to connect '" + readerName + "'\r\n " + mReader.getErrorMessage());
+            return false;
+        }
+
+        private void btnRdrConnect_Click(object sender, EventArgs e)
+        {
+            ConnectReader();
         }
 
         private void btnReadByteData_Click(object sender, EventArgs e)
@@ -139,23 +145,21 @@ namespace SLE44xxTool
 
         private void tabCardType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tabCardType.SelectedIndex == 0)
-            {
-                mCardType = CardType.SLE4428;
-                // mCardApi.SetCardType(CardType.SLE4428);
-            }
-            else if (tabCardType.SelectedIndex == 1)
-            {
-                mCardType = CardType.SLE4442;
-                // mCardApi.SetCardType(CardType.SLE4442);
-            }
+            //if (tabCardType.SelectedIndex == 0)
+            //{
+            //    mCardType = CardType.SLE4428;
+            //}
+            //else if (tabCardType.SelectedIndex == 1)
+            //{
+            //    mCardType = CardType.SLE4442;
+            //}
         }
 
         private void LogMessage(string message)
         {
             if (message.Length > 128)
             {
-                message = message.Substring(0, 128) + $"..({message.Length})";
+                message = message.Substring(0, 128) + $"..({message.Length / 2})";
             }
             txtLog.AppendText(message + Environment.NewLine);
             txtLog.SelectionStart = txtLog.TextLength; // 将光标移动到文本末尾
@@ -165,36 +169,62 @@ namespace SLE44xxTool
 
         private void btnAuthPSC_Click(object sender, EventArgs e)
         {
-            if (!checkConnection())
+            // we always reconnect the card (reset it before auth)
+            if (!ConnectReader(false))
                 return;
+
+            String strCardName = mCardApi.Type.ToString();
 
             if (mCardApi.AuthPSC(txtPSC.Text))
             {
-                LogMessage("sle4428 PCS verfied.");
-                statusLabel.Text = "sle4428 PCS verfied.";
+                LogMessage(strCardName + " PCS verify passed.");
+                statusLabel.Text = strCardName + " PCS verify passed.";
                 statusLabel.ForeColor = Color.Green;
 
                 boldAuthButton(Color.Green);
             }
             else
             {
-                LogMessage("sle4428 PCS verfy failed.");
-                statusLabel.Text = "sle4428 PCS verfy failed.";
+                LogMessage(strCardName + " PCS verify failed.");
+                statusLabel.Text = strCardName + " PCS verify failed.";
                 statusLabel.ForeColor = Color.Red;
 
                 boldAuthButton(Color.Red);
             }            
         }
 
-        private void boldAuthButton(Color foreColor)
+        private void boldAuthButton(Color foreColor, bool BoldIt = true)
         {
-            if (!btnAuthPSC.Font.Bold)
+            if (BoldIt)
+            {
+                if (!btnAuthPSC.Font.Bold)
+                    btnAuthPSC.Font = new Font(btnAuthPSC.Font.FontFamily,
+                                        btnAuthPSC.Font.Size, btnAuthPSC.Font.Style | FontStyle.Bold);
+            }
+            else
             {
                 btnAuthPSC.Font = new Font(btnAuthPSC.Font.FontFamily,
-                                        btnAuthPSC.Font.Size, btnAuthPSC.Font.Style | FontStyle.Bold);
+                                    btnAuthPSC.Font.Size, FontStyle.Regular);
             }
 
             btnAuthPSC.ForeColor = foreColor;
+        }
+
+        private void btnGetErrCounter_Click(object sender, EventArgs e)
+        {
+            if (!checkConnection())
+                return;
+
+            try
+            {
+                int counter = mCardApi.ReadErrorCounter();
+                LogMessage("Error Counter = " + counter + "\r\n ");
+                return;
+            }
+            catch (Exception) 
+                { }
+
+            LogMessage("Failed to get Error Counter\r\n");
         }
 
         private void frmMain_SizeChanged(object sender, EventArgs e)
@@ -217,8 +247,9 @@ namespace SLE44xxTool
             byteDataView.Refresh();
         }
 
-        private void DetectCard ()
+        private void DetectCard (bool bChangePCS = true)
         {
+            boldAuthButton(SystemColors.ControlText, false);
             if (!checkConnection())
                 return;
 
@@ -232,10 +263,16 @@ namespace SLE44xxTool
                     if (cardType == CARD_TYPE.SLE_4428)
                     {
                         mCardApi.SetCardType(CardType.SLE4428);
+                        tabCardType.TabPages[0].Text = "SLE4428";
+                        if (bChangePCS)
+                            txtPSC.Text = "FF FF";
                     }
                     else if (cardType == CARD_TYPE.SLE_4442)
                     {
                         mCardApi.SetCardType(CardType.SLE4442);
+                        tabCardType.TabPages[0].Text = "SLE4442";
+                        if (bChangePCS) 
+                            txtPSC.Text = "FF FF FF";
                     }
                 }
             }
@@ -254,7 +291,6 @@ namespace SLE44xxTool
         private void OnRWEClick(object ctrl, RWEOperation operation, int row)
         {
             ushort addr = (ushort)(row * 16);
-            byte[] data = null;
 
             if (ctrl == byteDataView)
             {
@@ -365,7 +401,5 @@ namespace SLE44xxTool
 
             return true;
         }
-
-
     }
 }

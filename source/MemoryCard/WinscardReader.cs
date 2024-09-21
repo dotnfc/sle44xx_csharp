@@ -16,7 +16,7 @@ namespace SLE44xxTool.MemoryCard
 {
     public class WinscardReader
     {
-        private int mLastResult;
+        private uint mLastResult;
 
         public enum ResetType
         {
@@ -27,6 +27,7 @@ namespace SLE44xxTool.MemoryCard
         #region Constants for SCardConnect
 
         private uint SCARD_S_SUCCESS = 0;
+        private uint SCARD_E_NO_READERS_AVAILABLE = 0x8010002E;
 
         // This application is willing to share this card with other applications.
         private const int SCARD_SHARE_SHARED = 1;
@@ -61,28 +62,28 @@ namespace SLE44xxTool.MemoryCard
 
 
         [DllImport("winscard.dll", CharSet = CharSet.Auto)]
-        private static extern int SCardEstablishContext(int dwScope, IntPtr pvReserved1, IntPtr pvReserved2, out IntPtr phContext);
+        private static extern uint SCardEstablishContext(int dwScope, IntPtr pvReserved1, IntPtr pvReserved2, out IntPtr phContext);
 
         [DllImport("winscard.dll", CharSet = CharSet.Auto)]
-        private static extern int SCardReleaseContext(IntPtr hContext);
+        private static extern uint SCardReleaseContext(IntPtr hContext);
 
         [DllImport("winscard.dll", EntryPoint = "SCardListReadersA", CharSet = CharSet.Auto)]
-        private static extern int SCardListReaders(IntPtr hContext, byte[] Groups, byte[] Readers, ref int pcchReaders);
+        private static extern uint SCardListReaders(IntPtr hContext, byte[] Groups, byte[] Readers, ref int pcchReaders);
 
         [DllImport("winscard.dll", CharSet = CharSet.Auto)]
-        private static extern int SCardConnect(IntPtr hContext, string szReader, uint dwShareMode, uint dwPreferredProtocols, out IntPtr phCard, out uint pdwActiveProtocol);
+        private static extern uint SCardConnect(IntPtr hContext, string szReader, uint dwShareMode, uint dwPreferredProtocols, out IntPtr phCard, out uint pdwActiveProtocol);
 
         [DllImport("winscard.dll", CharSet = CharSet.Auto)]
-        private static extern int SCardDisconnect(IntPtr hCard, uint dwDisposition);
+        private static extern uint SCardDisconnect(IntPtr hCard, uint dwDisposition);
 
         [DllImport("winscard.dll", CharSet = CharSet.Auto)]
-        private static extern int SCardReconnect(IntPtr hCard, uint dwShareMode, uint dwPreferredProtocols, uint dwInitialization, out uint pdwActiveProtocol);
+        private static extern uint SCardReconnect(IntPtr hCard, uint dwShareMode, uint dwPreferredProtocols, uint dwInitialization, out uint pdwActiveProtocol);
 
         [DllImport("winscard.dll", CharSet = CharSet.Auto)]
-        private static extern int SCardStatus(IntPtr hCard, StringBuilder szReaderName, ref int pcchReaderName, ref uint pdwState, ref uint pdwProtocol, byte[] pbAtr, ref int pcbAtr);
+        private static extern uint SCardStatus(IntPtr hCard, StringBuilder szReaderName, ref int pcchReaderName, ref uint pdwState, ref uint pdwProtocol, byte[] pbAtr, ref int pcbAtr);
 
         [DllImport("winscard.dll", CharSet = CharSet.Auto)]
-        private static extern int SCardTransmit(IntPtr hCard, [In] ref SCARD_IO_REQUEST pioSendPci, byte[] pbSendBuffer, uint cbSendLength, ref SCARD_IO_REQUEST pioRecvPci, byte[] pbRecvBuffer, ref uint pcbRecvLength);
+        private static extern uint SCardTransmit(IntPtr hCard, [In] ref SCARD_IO_REQUEST pioSendPci, byte[] pbSendBuffer, uint cbSendLength, ref SCARD_IO_REQUEST pioRecvPci, byte[] pbRecvBuffer, ref uint pcbRecvLength);
 
         [StructLayout(LayoutKind.Sequential)]
         public struct SCARD_IO_REQUEST
@@ -134,6 +135,10 @@ namespace SLE44xxTool.MemoryCard
             mLastResult = SCardListReaders(hContext, null, null, ref pcchReaders);
             if (mLastResult != SCARD_S_SUCCESS)
             {
+                if (mLastResult == SCARD_E_NO_READERS_AVAILABLE)
+                {
+                    return null;
+                }
                 throw new InvalidOperationException("Failed to get reader list buffer size.");
             }
 
@@ -282,7 +287,7 @@ namespace SLE44xxTool.MemoryCard
 
         public string getErrorMessage()
         {
-            string message = new Win32Exception(mLastResult).Message;
+            string message = new Win32Exception((int)mLastResult).Message;
 
             return message;
         }
@@ -298,7 +303,7 @@ namespace SLE44xxTool.MemoryCard
             else
                 dwInitialization = SCARD_RESET_CARD;		// warm reset
 
-            int result = SCardReconnect(hCard,
+            uint result = SCardReconnect(hCard,
                 SCARD_SHARE_SHARED,
                 SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1,
                 dwInitialization,

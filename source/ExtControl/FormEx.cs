@@ -6,6 +6,7 @@ namespace SLE44xxTool.ExtControl
 {
     public class FormEx : Form
     {
+
         public FormEx()
         {
             Load += BaseForm_Load;
@@ -26,6 +27,18 @@ namespace SLE44xxTool.ExtControl
             {
                 SetControlFont(control, font);
             }
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // FormEx
+            // 
+            this.ClientSize = new System.Drawing.Size(693, 469);
+            this.Name = "FormEx";
+            this.ResumeLayout(false);
+
         }
     }
 }

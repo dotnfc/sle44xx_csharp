@@ -29,22 +29,25 @@
         private void InitializeComponent()
         {
             this.btnDetectCard = new System.Windows.Forms.Button();
-            this.tabPageSLE4442 = new System.Windows.Forms.TabPage();
             this.btnChangePSC = new System.Windows.Forms.Button();
             this.btnAuthPSC = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.txtPSC = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.btnGetErrCounter = new System.Windows.Forms.Button();
             this.btnReadByteData = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tblPanel = new System.Windows.Forms.TableLayoutPanel();
             this.byteDataView = new SLE44xxTool.ExtControl.ByteViewerControl();
             this.byteAttrView = new SLE44xxTool.ExtControl.ByteViewerControl();
-            this.tabPageSLE4428 = new System.Windows.Forms.TabPage();
+            this.tabPageSLE44xx = new System.Windows.Forms.TabPage();
             this.tabCardType = new System.Windows.Forms.TabControl();
+            this.tabPageI2C = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.button4 = new System.Windows.Forms.Button();
+            this.byteViewerControl1 = new SLE44xxTool.ExtControl.ByteViewerControl();
+            this.byteViewerControl2 = new SLE44xxTool.ExtControl.ByteViewerControl();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.txtLog = new System.Windows.Forms.TextBox();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -53,13 +56,15 @@
             this.btnRefresh = new System.Windows.Forms.Button();
             this.cbxReaderList = new System.Windows.Forms.ComboBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.sle44xxPanel1 = new SLE44xxTool.ExtControl.Sle44xxPanel();
-            this.tabPageSLE4442.SuspendLayout();
+            this.lblVersion = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.tblPanel.SuspendLayout();
-            this.tabPageSLE4428.SuspendLayout();
+            this.tabPageSLE44xx.SuspendLayout();
             this.tabCardType.SuspendLayout();
+            this.tabPageI2C.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -77,18 +82,6 @@
             this.btnDetectCard.Text = "Detect Card";
             this.btnDetectCard.UseVisualStyleBackColor = true;
             this.btnDetectCard.Click += new System.EventHandler(this.btnDetectCard_Click);
-            // 
-            // tabPageSLE4442
-            // 
-            this.tabPageSLE4442.Controls.Add(this.sle44xxPanel1);
-            this.tabPageSLE4442.Location = new System.Drawing.Point(4, 25);
-            this.tabPageSLE4442.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
-            this.tabPageSLE4442.Name = "tabPageSLE4442";
-            this.tabPageSLE4442.Padding = new System.Windows.Forms.Padding(3, 5, 3, 5);
-            this.tabPageSLE4442.Size = new System.Drawing.Size(1344, 465);
-            this.tabPageSLE4442.TabIndex = 1;
-            this.tabPageSLE4442.Text = "SLE4442";
-            this.tabPageSLE4442.UseVisualStyleBackColor = true;
             // 
             // btnChangePSC
             // 
@@ -133,6 +126,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnGetErrCounter);
             this.groupBox1.Controls.Add(this.btnChangePSC);
             this.groupBox1.Controls.Add(this.btnAuthPSC);
             this.groupBox1.Controls.Add(this.label1);
@@ -147,39 +141,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = " PSC Security ";
             // 
-            // label2
+            // btnGetErrCounter
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(233, 13);
-            this.label2.Margin = new System.Windows.Forms.Padding(12, 13, 0, 17);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(70, 20);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Show in ";
-            // 
-            // radioButton1
-            // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(306, 13);
-            this.radioButton1.Margin = new System.Windows.Forms.Padding(3, 13, 12, 17);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(68, 24);
-            this.radioButton1.TabIndex = 1;
-            this.radioButton1.Text = "ASCII";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Checked = true;
-            this.radioButton2.Location = new System.Drawing.Point(389, 13);
-            this.radioButton2.Margin = new System.Windows.Forms.Padding(3, 13, 12, 17);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(60, 24);
-            this.radioButton2.TabIndex = 3;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "HEX";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.btnGetErrCounter.Location = new System.Drawing.Point(431, 24);
+            this.btnGetErrCounter.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+            this.btnGetErrCounter.Name = "btnGetErrCounter";
+            this.btnGetErrCounter.Size = new System.Drawing.Size(134, 32);
+            this.btnGetErrCounter.TabIndex = 4;
+            this.btnGetErrCounter.Text = "GetErrCounter";
+            this.btnGetErrCounter.UseVisualStyleBackColor = true;
+            this.btnGetErrCounter.Click += new System.EventHandler(this.btnGetErrCounter_Click);
             // 
             // btnReadByteData
             // 
@@ -195,9 +166,6 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.btnReadByteData);
-            this.flowLayoutPanel1.Controls.Add(this.label2);
-            this.flowLayoutPanel1.Controls.Add(this.radioButton1);
-            this.flowLayoutPanel1.Controls.Add(this.radioButton2);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 5);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -220,7 +188,7 @@
             this.tblPanel.RowCount = 2;
             this.tblPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
             this.tblPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tblPanel.Size = new System.Drawing.Size(1338, 383);
+            this.tblPanel.Size = new System.Drawing.Size(1338, 372);
             this.tblPanel.TabIndex = 1;
             this.tblPanel.SizeChanged += new System.EventHandler(this.frmMain_SizeChanged);
             // 
@@ -237,7 +205,7 @@
             this.byteDataView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.byteDataView.Name = "byteDataView";
             this.byteDataView.ProtectedData = null;
-            this.byteDataView.Size = new System.Drawing.Size(663, 327);
+            this.byteDataView.Size = new System.Drawing.Size(663, 316);
             this.byteDataView.TabIndex = 5;
             // 
             // byteAttrView
@@ -253,28 +221,28 @@
             this.byteAttrView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.byteAttrView.Name = "byteAttrView";
             this.byteAttrView.ProtectedData = null;
-            this.byteAttrView.Size = new System.Drawing.Size(663, 327);
+            this.byteAttrView.Size = new System.Drawing.Size(663, 316);
             this.byteAttrView.TabIndex = 6;
             // 
-            // tabPageSLE4428
+            // tabPageSLE44xx
             // 
-            this.tabPageSLE4428.Controls.Add(this.tblPanel);
-            this.tabPageSLE4428.Controls.Add(this.groupBox1);
-            this.tabPageSLE4428.Location = new System.Drawing.Point(4, 25);
-            this.tabPageSLE4428.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
-            this.tabPageSLE4428.Name = "tabPageSLE4428";
-            this.tabPageSLE4428.Padding = new System.Windows.Forms.Padding(3, 5, 3, 5);
-            this.tabPageSLE4428.Size = new System.Drawing.Size(1344, 465);
-            this.tabPageSLE4428.TabIndex = 0;
-            this.tabPageSLE4428.Text = "SLE4428";
-            this.tabPageSLE4428.UseVisualStyleBackColor = true;
+            this.tabPageSLE44xx.Controls.Add(this.tblPanel);
+            this.tabPageSLE44xx.Controls.Add(this.groupBox1);
+            this.tabPageSLE44xx.Location = new System.Drawing.Point(4, 36);
+            this.tabPageSLE44xx.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+            this.tabPageSLE44xx.Name = "tabPageSLE44xx";
+            this.tabPageSLE44xx.Padding = new System.Windows.Forms.Padding(3, 5, 3, 5);
+            this.tabPageSLE44xx.Size = new System.Drawing.Size(1344, 454);
+            this.tabPageSLE44xx.TabIndex = 0;
+            this.tabPageSLE44xx.Text = "SLE4428";
+            this.tabPageSLE44xx.UseVisualStyleBackColor = true;
             // 
             // tabCardType
             // 
-            this.tabCardType.Controls.Add(this.tabPageSLE4428);
-            this.tabCardType.Controls.Add(this.tabPageSLE4442);
+            this.tabCardType.Controls.Add(this.tabPageSLE44xx);
+            this.tabCardType.Controls.Add(this.tabPageI2C);
             this.tabCardType.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabCardType.ItemSize = new System.Drawing.Size(96, 21);
+            this.tabCardType.ItemSize = new System.Drawing.Size(96, 32);
             this.tabCardType.Location = new System.Drawing.Point(0, 0);
             this.tabCardType.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.tabCardType.Name = "tabCardType";
@@ -282,6 +250,88 @@
             this.tabCardType.Size = new System.Drawing.Size(1352, 494);
             this.tabCardType.TabIndex = 1;
             this.tabCardType.SelectedIndexChanged += new System.EventHandler(this.tabCardType_SelectedIndexChanged);
+            // 
+            // tabPageI2C
+            // 
+            this.tabPageI2C.Controls.Add(this.tableLayoutPanel1);
+            this.tabPageI2C.Location = new System.Drawing.Point(4, 36);
+            this.tabPageI2C.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+            this.tabPageI2C.Name = "tabPageI2C";
+            this.tabPageI2C.Padding = new System.Windows.Forms.Padding(3, 5, 3, 5);
+            this.tabPageI2C.Size = new System.Drawing.Size(1344, 454);
+            this.tabPageI2C.TabIndex = 1;
+            this.tabPageI2C.Text = "Atmel-I2C";
+            this.tabPageI2C.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.AutoSize = true;
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel2, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.byteViewerControl1, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.byteViewerControl2, 1, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 5);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1338, 444);
+            this.tableLayoutPanel1.TabIndex = 2;
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.Controls.Add(this.button4);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 5);
+            this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(574, 38);
+            this.flowLayoutPanel2.TabIndex = 1;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(3, 7);
+            this.button4.Margin = new System.Windows.Forms.Padding(3, 7, 3, 5);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(215, 32);
+            this.button4.TabIndex = 0;
+            this.button4.Text = "Read Data Bytes";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // byteViewerControl1
+            // 
+            this.byteViewerControl1.BackColor = System.Drawing.SystemColors.Window;
+            this.byteViewerControl1.BytesPerRow = 16;
+            this.byteViewerControl1.Caption = "Byte Data Viewer";
+            this.byteViewerControl1.CardDataLength = 0;
+            this.byteViewerControl1.Data = null;
+            this.byteViewerControl1.DisplayMode = SLE44xxTool.ExtControl.ByteViewerControl.ShowMode.DATA;
+            this.byteViewerControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.byteViewerControl1.Location = new System.Drawing.Point(3, 52);
+            this.byteViewerControl1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.byteViewerControl1.Name = "byteViewerControl1";
+            this.byteViewerControl1.ProtectedData = null;
+            this.byteViewerControl1.Size = new System.Drawing.Size(663, 388);
+            this.byteViewerControl1.TabIndex = 5;
+            // 
+            // byteViewerControl2
+            // 
+            this.byteViewerControl2.BackColor = System.Drawing.SystemColors.Window;
+            this.byteViewerControl2.BytesPerRow = 16;
+            this.byteViewerControl2.Caption = "Byte Attr Viewer";
+            this.byteViewerControl2.CardDataLength = 0;
+            this.byteViewerControl2.Data = null;
+            this.byteViewerControl2.DisplayMode = SLE44xxTool.ExtControl.ByteViewerControl.ShowMode.ATTR;
+            this.byteViewerControl2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.byteViewerControl2.Location = new System.Drawing.Point(672, 52);
+            this.byteViewerControl2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.byteViewerControl2.Name = "byteViewerControl2";
+            this.byteViewerControl2.ProtectedData = null;
+            this.byteViewerControl2.Size = new System.Drawing.Size(663, 388);
+            this.byteViewerControl2.TabIndex = 6;
             // 
             // splitContainer1
             // 
@@ -379,20 +429,23 @@
             this.toolStrip1.TabIndex = 13;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // sle44xxPanel1
+            // lblVersion
             // 
-            this.sle44xxPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sle44xxPanel1.Location = new System.Drawing.Point(3, 5);
-            this.sle44xxPanel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.sle44xxPanel1.Name = "sle44xxPanel1";
-            this.sle44xxPanel1.Size = new System.Drawing.Size(1338, 455);
-            this.sle44xxPanel1.TabIndex = 0;
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Italic);
+            this.lblVersion.ForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.lblVersion.Location = new System.Drawing.Point(1184, 15);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(156, 20);
+            this.lblVersion.TabIndex = 20;
+            this.lblVersion.Text = "Buildon: 2024/09/22";
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1352, 703);
+            this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.btnDetectCard);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.statusStrip1);
@@ -403,16 +456,18 @@
             this.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmMain";
-            this.Text = "SLE44xxTool - 1.0";
-            this.tabPageSLE4442.ResumeLayout(false);
+            this.Text = "SLE44xxTool-V1.1";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
             this.tblPanel.ResumeLayout(false);
-            this.tabPageSLE4428.ResumeLayout(false);
-            this.tabPageSLE4428.PerformLayout();
+            this.tabPageSLE44xx.ResumeLayout(false);
+            this.tabPageSLE44xx.PerformLayout();
             this.tabCardType.ResumeLayout(false);
+            this.tabPageI2C.ResumeLayout(false);
+            this.tabPageI2C.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel2.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
@@ -428,19 +483,15 @@
         #endregion
 
         private System.Windows.Forms.Button btnDetectCard;
-        private System.Windows.Forms.TabPage tabPageSLE4442;
         private System.Windows.Forms.Button btnChangePSC;
         private System.Windows.Forms.Button btnAuthPSC;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtPSC;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.Button btnReadByteData;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tblPanel;
-        private System.Windows.Forms.TabPage tabPageSLE4428;
+        private System.Windows.Forms.TabPage tabPageSLE44xx;
         private System.Windows.Forms.TabControl tabCardType;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TextBox txtLog;
@@ -452,7 +503,14 @@
         private System.Windows.Forms.ToolStrip toolStrip1;
         private ExtControl.ByteViewerControl byteDataView;
         private ExtControl.ByteViewerControl byteAttrView;
-        private ExtControl.Sle44xxPanel sle44xxPanel1;
+        private System.Windows.Forms.Button btnGetErrCounter;
+        private System.Windows.Forms.TabPage tabPageI2C;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.Button button4;
+        private ExtControl.ByteViewerControl byteViewerControl1;
+        private ExtControl.ByteViewerControl byteViewerControl2;
+        private System.Windows.Forms.Label lblVersion;
     }
 }
 
