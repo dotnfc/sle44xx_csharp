@@ -121,6 +121,8 @@ namespace SLE44xxTool
 
         private void btnRdrConnect_Click(object sender, EventArgs e)
         {
+            byteDataView.resetView();
+            byteAttrView.resetView();
             ConnectReader();
         }
 
@@ -170,8 +172,8 @@ namespace SLE44xxTool
         private void btnAuthPSC_Click(object sender, EventArgs e)
         {
             // we always reconnect the card (reset it before auth)
-            if (!ConnectReader(false))
-                return;
+            //if (!ConnectReader(false))
+            //    return;
 
             String strCardName = mCardApi.Type.ToString();
 

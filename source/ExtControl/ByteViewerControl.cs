@@ -127,6 +127,16 @@ namespace SLE44xxTool.ExtControl
             set => cardDataLength = value;
         }
 
+        public void resetView()
+        {
+            Data = null;
+            ProtectedData = null;
+            DisplayMode = ShowMode.DATA;
+
+            AdjustScrollBars();
+            Refresh();
+        }
+
         public void updateView()
         {
             if (showMode == ShowMode.DATA)

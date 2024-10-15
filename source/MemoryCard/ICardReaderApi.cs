@@ -48,7 +48,7 @@ namespace SLE44xxTool.MemoryCard
     {
         public static ICardReaderApi CreateCardReader(string readerName, object device)
         {
-            if (readerName.StartsWith("HID") || readerName.StartsWith("Feitian") )
+            if (readerName.StartsWith("Aero") || readerName.StartsWith("HID") || readerName.StartsWith("Feitian") )
             {
                 return new HidReaderApi((WinscardReader)device);
             }
@@ -58,7 +58,7 @@ namespace SLE44xxTool.MemoryCard
             }
             else
             {
-                throw new ArgumentException("Invalid reader type");
+                throw new ArgumentException("Unsupported Reader");
             }
         }
     }
